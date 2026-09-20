@@ -1,0 +1,21 @@
+# search output
+outputs/
+out/
+
+# downloaded wordlists (not part of this repo, see README)
+matts_wordlist.txt
+wordlists/
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# editors and OS
+.DS_Store
+.idea/
+.vscode/
