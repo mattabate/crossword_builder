@@ -18,6 +18,7 @@ import json
 import multiprocessing
 import os
 import random
+import signal
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -124,6 +125,8 @@ _WORKER_CTX: Optional[ConstructorContext] = None
 
 def _init_worker(config: ConstructorConfig) -> None:
     global _WORKER_CTX
+    # Ctrl-C belongs to the parent, which saves the snapshot and stops the pool.
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
     _WORKER_CTX = ConstructorContext(config)
 
 
