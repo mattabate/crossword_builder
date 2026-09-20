@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crossword-constructor"
+version = "0.1.0"
+description = "Fill crossword grids from a template and a wordlist."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Matt Abate" }]
+keywords = ["crossword", "constraint-satisfaction", "ac-3", "puzzle"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment :: Puzzle Games",
+]
+dependencies = []
+
+[project.optional-dependencies]
+progress = ["tqdm"]
+
+[project.urls]
+Homepage = "https://mattabate.com/projects"
+Wordlist = "https://github.com/mattabate/wordlist"
+
+[project.scripts]
+crossword-constructor = "crossword_constructor.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
