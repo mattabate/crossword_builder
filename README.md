@@ -1,6 +1,6 @@
-# Crossword Constructor
+# Crossword Builder
 
-You give it a grid template (the walls, plus any entries you already want) and a wordlist. It searches for ways to fill the rest, so that every across and down entry is a word from the list. It saves every fill it finds, so you choose among options.
+Build crosswords from an incomplete grid and a wordlist. You start with a grid that has some entries placed (the walls, plus the words you already want). The code fills the rest, so that every across and down entry is a word from the list. It saves every fill it finds, so you get options to choose from.
 
 It is a command line tool and a small Python package. The core uses only the standard library. Grids can be any rectangular size.
 
@@ -23,7 +23,7 @@ pip install ".[progress]"
 You can also run it without installing:
 
 ```
-PYTHONPATH=src python3 -m crossword_constructor --help
+PYTHONPATH=src python3 -m crossword_builder --help
 ```
 
 ## Quickstart
@@ -37,7 +37,7 @@ curl -L -o matts_wordlist.txt https://raw.githubusercontent.com/mattabate/wordli
 Fill the example template:
 
 ```
-crossword-constructor fill examples/moody-foods/template.txt --wordlist matts_wordlist.txt --out outputs/moody-foods
+crossword-builder fill examples/moody-foods/template.txt --wordlist matts_wordlist.txt --out outputs/moody-foods
 ```
 
 The search runs until it has tried everything or until you stop it with Ctrl-C. Fills are written as they are found:
@@ -48,14 +48,14 @@ The search runs until it has tried everything or until you stop it with Ctrl-C. 
 Continue a stopped search:
 
 ```
-crossword-constructor fill examples/moody-foods/template.txt --wordlist matts_wordlist.txt --out outputs/moody-foods --resume
+crossword-builder fill examples/moody-foods/template.txt --wordlist matts_wordlist.txt --out outputs/moody-foods --resume
 ```
 
 Look at the results, or check a finished grid against a wordlist:
 
 ```
-crossword-constructor show outputs/moody-foods/combined.json --limit 5
-crossword-constructor check examples/moody-foods/solution.txt --wordlist matts_wordlist.txt
+crossword-builder show outputs/moody-foods/combined.json --limit 5
+crossword-builder check examples/moody-foods/solution.txt --wordlist matts_wordlist.txt
 ```
 
 ### Wordlist formats
@@ -88,8 +88,8 @@ A wordlist is a text file. Each line is either `WORD;SCORE` or just `WORD`. Word
 
 Two more commands:
 
-- `crossword-constructor seed TEMPLATE --place ROW,COL,DIR,WORD` writes theme entries into a template. ROW and COL are 0-based. DIR is `across` or `down`. `WORD1|WORD2` gives alternatives, and one starting grid is made for each combination that fits.
-- `crossword-constructor prune DIR --bad-words FILE` removes queued partial grids that already contain a word you have since rejected. Use it before `--resume`.
+- `crossword-builder seed TEMPLATE --place ROW,COL,DIR,WORD` writes theme entries into a template. ROW and COL are 0-based. DIR is `across` or `down`. `WORD1|WORD2` gives alternatives, and one starting grid is made for each combination that fits.
+- `crossword-builder prune DIR --bad-words FILE` removes queued partial grids that already contain a word you have since rejected. Use it before `--resume`.
 
 ## Template format
 
@@ -157,7 +157,7 @@ The search is exhaustive. If it ends on its own, it has found every fill that th
 ## Use as a library
 
 ```python
-from crossword_constructor import RunOptions, ConstructorConfig, load_wordlist, read_template, run_search
+from crossword_builder import RunOptions, BuilderConfig, load_wordlist, read_template, run_search
 
 if __name__ == "__main__":
     grid = read_template("examples/moody-foods/template.txt")
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     words += ["BLUEBERRY", "SOURCREAM"]  # fixed entries must be in the list
     result = run_search(
         [grid],
-        ConstructorConfig(words=tuple(dict.fromkeys(words))),
+        BuilderConfig(words=tuple(dict.fromkeys(words))),
         RunOptions(workers=4, out_dir="outputs/moody-foods", max_solutions=10),
     )
     for solution in result.solutions:

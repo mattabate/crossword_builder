@@ -4,8 +4,8 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.ac3 import get_word_locations, initialise
-from crossword_constructor.grid import (
+from crossword_builder.ac3 import get_word_locations, initialise
+from crossword_builder.grid import (
     C_UNKNOWN,
     C_WALL,
     Direction,
@@ -20,7 +20,7 @@ from crossword_constructor.grid import (
     transpose,
     validate_grid,
 )
-from crossword_constructor.wordlist import WordIndex
+from crossword_builder.wordlist import WordIndex
 
 
 class TemplateParsingTests(unittest.TestCase):

@@ -4,9 +4,9 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.ac3 import initialise
-from crossword_constructor.filters import contains_bad_word_pairs
-from crossword_constructor.grid import (
+from crossword_builder.ac3 import initialise
+from crossword_builder.filters import contains_bad_word_pairs
+from crossword_builder.grid import (
     C_UNKNOWN,
     C_WALL,
     Direction,
@@ -18,8 +18,8 @@ from crossword_constructor.grid import (
     read_template,
     validate_grid,
 )
-from crossword_constructor.seed import make_seed_grids, parse_placement
-from crossword_constructor.wordlist import WordIndex
+from crossword_builder.seed import make_seed_grids, parse_placement
+from crossword_builder.wordlist import WordIndex
 
 EXAMPLE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "examples", "moody-foods"

@@ -4,8 +4,8 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.grid import Direction
-from crossword_constructor.seed import make_seed_grids, parse_placement, place_word
+from crossword_builder.grid import Direction
+from crossword_builder.seed import make_seed_grids, parse_placement, place_word
 
 # 3 rows x 5 columns
 TEMPLATE = ["..█..", ".....", "█...█"]

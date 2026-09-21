@@ -20,7 +20,7 @@ Run these from the repo root. The first line downloads my wordlist. It is not pa
 
 ```
 curl -L -o matts_wordlist.txt https://raw.githubusercontent.com/mattabate/wordlist/refs/heads/main/quickstart/matts_wordlist.txt
-crossword-constructor fill "examples/moody-foods/template.txt" --wordlist matts_wordlist.txt --out outputs/moody-foods
+crossword-builder fill "examples/moody-foods/template.txt" --wordlist matts_wordlist.txt --out outputs/moody-foods
 ```
 
 The search writes every fill it finds to `outputs/moody-foods/solutions.txt`.
@@ -37,13 +37,13 @@ Which fills come first depends on the wordlist, on `--min-score` and on `--seed`
 It finds 24 fills, and the published grid is one of them:
 
 ```
-crossword-constructor fill "examples/moody-foods/template-quick.txt" --wordlist matts_wordlist.txt --min-score 10 --out outputs/moody-foods-quick
+crossword-builder fill "examples/moody-foods/template-quick.txt" --wordlist matts_wordlist.txt --min-score 10 --out outputs/moody-foods-quick
 ```
 
 To check the published grid against a wordlist:
 
 ```
-crossword-constructor check "examples/moody-foods/solution.txt" --wordlist matts_wordlist.txt
+crossword-builder check "examples/moody-foods/solution.txt" --wordlist matts_wordlist.txt
 ```
 
 `check` lists any entry of the grid that is not in the wordlist.

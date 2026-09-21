@@ -1,4 +1,4 @@
-"""Entry point for ``python -m crossword_constructor``."""
+"""Entry point for ``python -m crossword_builder``."""
 from .cli import main
 
 # The guard matters: worker processes started with the "spawn" method import

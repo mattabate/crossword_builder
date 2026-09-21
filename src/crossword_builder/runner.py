@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
-from .context import ConstructorConfig, ConstructorContext
+from .context import BuilderConfig, BuilderContext
 from .filters import contains_bad_word_pairs
 from .grid import (
     C_UNKNOWN,
@@ -75,14 +75,14 @@ class RunResult:
 
 
 # ───────────────────────── one unit of work ───────────────────────────────────
-def expand(grid: Grid, ctx: ConstructorContext) -> List[Grid]:
+def expand(grid: Grid, ctx: BuilderContext) -> List[Grid]:
     """Expand one grid with the configured search step."""
     if ctx.config.block_pruning:
         return super_get_new_grids(grid, ctx, cell_heuristic)
     return get_new_grids(grid, ctx, cell_heuristic)
 
 
-def worker_loop(in_queue: Frontier, ctx: ConstructorContext, progress: bool = False):
+def worker_loop(in_queue: Frontier, ctx: BuilderContext, progress: bool = False):
     """Expand every grid of a chunk.
 
     Returns (children, solutions, count): incomplete children as
@@ -120,14 +120,14 @@ def worker_loop(in_queue: Frontier, ctx: ConstructorContext, progress: bool = Fa
 
 # Worker processes are started with the "spawn" method. Each one builds its
 # own context from the pickled config, once, in the pool initializer.
-_WORKER_CTX: Optional[ConstructorContext] = None
+_WORKER_CTX: Optional[BuilderContext] = None
 
 
-def _init_worker(config: ConstructorConfig) -> None:
+def _init_worker(config: BuilderConfig) -> None:
     global _WORKER_CTX
     # Ctrl-C belongs to the parent, which saves the snapshot and stops the pool.
     signal.signal(signal.SIGINT, signal.SIG_IGN)
-    _WORKER_CTX = ConstructorContext(config)
+    _WORKER_CTX = BuilderContext(config)
 
 
 def _run_chunk(chunk: Frontier):
@@ -202,7 +202,7 @@ def load_frontier(combined: Dict) -> Frontier:
 
 # ───────────────────────── main driver loop ───────────────────────────────────
 def run_search(
-    start_grids: List[Grid], config: ConstructorConfig, options: Optional[RunOptions] = None
+    start_grids: List[Grid], config: BuilderConfig, options: Optional[RunOptions] = None
 ) -> RunResult:
     opts = options or RunOptions()
     if opts.workers < 1:
@@ -278,10 +278,10 @@ def run_search(
     rng = random.Random(opts.seed)
     batch_size = opts.workers * opts.chunk_size
 
-    ctx: Optional[ConstructorContext] = None
+    ctx: Optional[BuilderContext] = None
     pool = None
     if opts.workers == 1:
-        ctx = ConstructorContext(config)
+        ctx = BuilderContext(config)
     else:
         pool = multiprocessing.get_context("spawn").Pool(
             processes=opts.workers, initializer=_init_worker, initargs=(config,)

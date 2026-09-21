@@ -8,7 +8,7 @@ import sys
 from typing import List, Optional, Sequence, Set
 
 from . import __version__
-from .context import ConstructorConfig
+from .context import BuilderConfig
 from .filters import contains_bad_word_pairs, load_bad_pairs, load_contains_words
 from .grid import (
     C_UNKNOWN,
@@ -110,7 +110,7 @@ def cmd_fill(args) -> int:
               "Entries of that length cannot be filled (see --min-length / --max-length).",
               file=sys.stderr)
 
-    config = ConstructorConfig(
+    config = BuilderConfig(
         words=tuple(words),
         bad_pairs=bad_pairs,
         contains=contains,
@@ -132,7 +132,7 @@ def cmd_fill(args) -> int:
     result = run_search(list(grids), config, options)
     if not args.quiet and result.state_path:
         print(f"Results: {result.state_path}  "
-              f"(view with: crossword-constructor show {result.state_path})")
+              f"(view with: crossword-builder show {result.state_path})")
     return 0
 
 
@@ -277,7 +277,7 @@ def cmd_prune(args) -> int:
 # ───────────────────────── parser ─────────────────────────────────────────────
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="crossword-constructor",
+        prog="crossword-builder",
         description="Fill crossword grids from a template and a wordlist.",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")

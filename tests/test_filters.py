@@ -5,13 +5,13 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.filters import (
+from crossword_builder.filters import (
     contains_bad_word_pairs,
     contains_duplicate,
     load_bad_pairs,
     load_contains_words,
 )
-from crossword_constructor.grid import get_words_in_grid
+from crossword_builder.grid import get_words_in_grid
 
 GRID = ["█ORE", "AREA", "SCAR", "HAM█"]
 # across: ORE AREA SCAR HAM, down: ASH ORCA REAM EAR
