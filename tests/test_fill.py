@@ -44,12 +44,12 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.context import ConstructorConfig, ConstructorContext
-from crossword_constructor.grid import parse_template
-from crossword_constructor.pruning import super_get_new_grids
-from crossword_constructor.runner import RunOptions, run_search
-from crossword_constructor.search import cell_heuristic, get_new_grids
-from crossword_constructor.wordlist import load_wordlist
+from crossword_builder.context import BuilderConfig, BuilderContext
+from crossword_builder.grid import parse_template
+from crossword_builder.pruning import super_get_new_grids
+from crossword_builder.runner import RunOptions, run_search
+from crossword_builder.search import cell_heuristic, get_new_grids
+from crossword_builder.wordlist import load_wordlist
 
 WORDLIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tiny_wordlist.txt")
 
@@ -78,7 +78,7 @@ class TinyFillTests(unittest.TestCase):
         self.assertEqual(len(self.words), 21)
 
     def test_default_search_finds_exactly_the_four_fills(self):
-        result, fills = _fill(ConstructorConfig(words=self.words))
+        result, fills = _fill(BuilderConfig(words=self.words))
         self.assertEqual(fills, ALL_FILLS)
         self.assertEqual(len(result.solutions), 4)  # no fill is reported twice
         self.assertTrue(result.exhausted)
@@ -87,25 +87,25 @@ class TinyFillTests(unittest.TestCase):
     def test_block_pruning_forced_on(self):
         # The grid is so constrained that the default lower threshold skips
         # its two open 3x3 blocks. Drop the threshold so they are pruned.
-        result, fills = _fill(ConstructorConfig(words=self.words, min_block_sum=0))
+        result, fills = _fill(BuilderConfig(words=self.words, min_block_sum=0))
         self.assertEqual(fills, ALL_FILLS)
         self.assertEqual(len(result.solutions), 4)
 
     def test_plain_search_without_block_pruning(self):
-        result, fills = _fill(ConstructorConfig(words=self.words, block_pruning=False))
+        result, fills = _fill(BuilderConfig(words=self.words, block_pruning=False))
         self.assertEqual(fills, ALL_FILLS)
         self.assertEqual(len(result.solutions), 4)
 
     def test_small_batches_and_plateau_mode_find_the_same_fills(self):
-        _, fills = _fill(ConstructorConfig(words=self.words), chunk_size=1, seed=7)
+        _, fills = _fill(BuilderConfig(words=self.words), chunk_size=1, seed=7)
         self.assertEqual(fills, ALL_FILLS)
-        _, fills = _fill(ConstructorConfig(words=self.words), chunk_size=2, plateau=True, buffer=1)
+        _, fills = _fill(BuilderConfig(words=self.words), chunk_size=2, plateau=True, buffer=1)
         self.assertEqual(fills, ALL_FILLS)
 
     def test_bad_pair_removes_the_fills_that_contain_it(self):
         bad_pairs = frozenset([frozenset(["HAM", "ORCA"])])
         for block_pruning in (True, False):
-            config = ConstructorConfig(
+            config = BuilderConfig(
                 words=self.words, bad_pairs=bad_pairs, block_pruning=block_pruning
             )
             _, fills = _fill(config)
@@ -115,11 +115,11 @@ class TinyFillTests(unittest.TestCase):
         # SCAR and ORCA are in all four fills. Declare that both contain the
         # same word, and every fill must be rejected.
         contains = {"SCAR": ["CAR"], "ORCA": ["CAR"]}
-        _, fills = _fill(ConstructorConfig(words=self.words, contains=contains))
+        _, fills = _fill(BuilderConfig(words=self.words, contains=contains))
         self.assertEqual(fills, set())
 
     def test_every_child_extends_its_parent(self):
-        ctx = ConstructorContext(ConstructorConfig(words=self.words))
+        ctx = BuilderContext(BuilderConfig(words=self.words))
         start = parse_template(TEMPLATE)
         for step in (super_get_new_grids, get_new_grids):
             children = step(start, ctx, cell_heuristic)
@@ -134,18 +134,18 @@ class TinyFillTests(unittest.TestCase):
             self.assertEqual(len({tuple(c) for c in children}), len(children))
 
     def test_unfillable_template(self):
-        result, fills = _fill(ConstructorConfig(words=("ORE", "AREA")))
+        result, fills = _fill(BuilderConfig(words=("ORE", "AREA")))
         self.assertEqual(fills, set())
         self.assertTrue(result.exhausted)
 
     def test_max_solutions_stops_early(self):
-        result, fills = _fill(ConstructorConfig(words=self.words), chunk_size=1, max_solutions=1)
+        result, fills = _fill(BuilderConfig(words=self.words), chunk_size=1, max_solutions=1)
         self.assertGreaterEqual(len(fills), 1)
         self.assertTrue(fills <= ALL_FILLS)
 
     def test_state_file_and_resume(self):
         with tempfile.TemporaryDirectory() as out:
-            config = ConstructorConfig(words=self.words)
+            config = BuilderConfig(words=self.words)
             first, _ = _fill(config, out_dir=out, chunk_size=1, max_solutions=1)
             state_path = os.path.join(out, "combined.json")
             self.assertEqual(first.state_path, state_path)
@@ -170,7 +170,7 @@ class TinyFillTests(unittest.TestCase):
 
     def test_two_worker_processes(self):
         # Starts a real pool of two spawned worker processes.
-        result, fills = _fill(ConstructorConfig(words=self.words), workers=2, chunk_size=2)
+        result, fills = _fill(BuilderConfig(words=self.words), workers=2, chunk_size=2)
         self.assertEqual(fills, ALL_FILLS)
         self.assertEqual(len(result.solutions), 4)
 

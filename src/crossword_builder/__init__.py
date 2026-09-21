@@ -1,8 +1,8 @@
-"""crossword_constructor: fill crossword grids from a template and a wordlist."""
+"""crossword_builder: build crosswords from an incomplete grid and a wordlist."""
 
 __version__ = "0.1.0"
 
-from .context import ConstructorConfig, ConstructorContext
+from .context import BuilderConfig, BuilderContext
 from .grid import (
     C_UNKNOWN,
     C_WALL,
@@ -18,10 +18,10 @@ from .runner import RunOptions, RunResult, run_search
 from .wordlist import WordIndex, load_wordlist
 
 __all__ = [
+    "BuilderConfig",
+    "BuilderContext",
     "C_UNKNOWN",
     "C_WALL",
-    "ConstructorConfig",
-    "ConstructorContext",
     "Direction",
     "Grid",
     "RunOptions",

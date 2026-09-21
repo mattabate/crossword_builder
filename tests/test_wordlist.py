@@ -5,7 +5,7 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.wordlist import WordIndex, load_word_set, load_wordlist, normalize_word
+from crossword_builder.wordlist import WordIndex, load_word_set, load_wordlist, normalize_word
 
 SCORED = "APPLE;50\nbanana;40\nCHERRY;10\nFIG;60\nice cream;45\nDON'T;30\nR2D2;50\n\nAPPLE;20\n"
 PLAIN = "apple\nBanana\n\ncherry\nfig\n"

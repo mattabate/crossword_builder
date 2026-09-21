@@ -1,4 +1,4 @@
-"""Tests for crossword_constructor. Run from the repo root:
+"""Tests for crossword_builder. Run from the repo root:
 
     python3 -m unittest discover -s tests -t .
 """

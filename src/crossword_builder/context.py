@@ -1,7 +1,7 @@
 """Configuration and per-process context for the search.
 
-``ConstructorConfig`` is plain data. It can be pickled and sent to worker
-processes. ``ConstructorContext`` is built from a config inside each process. It
+``BuilderConfig`` is plain data. It can be pickled and sent to worker
+processes. ``BuilderContext`` is built from a config inside each process. It
 holds the word index and the pattern cache, which are large and are rebuilt
 per process instead of being pickled.
 """
@@ -14,7 +14,7 @@ from .wordlist import WordIndex
 
 
 @dataclass(frozen=True)
-class ConstructorConfig:
+class BuilderConfig:
     # The wordlist, already filtered and uppercased.
     words: Tuple[str, ...]
     # Pairs of words that must not appear in the same grid.
@@ -37,8 +37,8 @@ class ConstructorConfig:
     verbose: bool = False
 
 
-class ConstructorContext:
-    def __init__(self, config: ConstructorConfig):
+class BuilderContext:
+    def __init__(self, config: BuilderConfig):
         self.config = config
         self.index = WordIndex(config.words)
         self.bad_pairs = config.bad_pairs

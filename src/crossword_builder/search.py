@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Callable, Iterable, List, Optional, Tuple
 
 from .ac3 import SquareMap, Word, ac3_reduce, fill_in_squares_one_possibility, initialise
-from .context import ConstructorContext
+from .context import BuilderContext
 from .filters import contains_bad_word_pairs
 from .grid import C_UNKNOWN, Grid, get_words_in_grid, replace_char_in_grid
 
@@ -178,7 +178,7 @@ def _pick_branch_square(
 
 
 def get_new_grids(
-    grid: Grid, ctx: ConstructorContext, heuristic: Heuristic = cell_heuristic
+    grid: Grid, ctx: BuilderContext, heuristic: Heuristic = cell_heuristic
 ) -> List[Grid]:
     # ── AC-3 pass ────────────────────────────────────────────────────────────
     words, square_map = initialise(grid, ctx.index)

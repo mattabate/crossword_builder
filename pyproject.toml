@@ -3,9 +3,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "crossword-constructor"
+name = "crossword-builder"
 version = "0.1.0"
-description = "Fill crossword grids from a template and a wordlist."
+description = "Build crosswords from an incomplete grid and a wordlist."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -27,7 +27,7 @@ Homepage = "https://mattabate.com/projects"
 Wordlist = "https://github.com/mattabate/wordlist"
 
 [project.scripts]
-crossword-constructor = "crossword_constructor.cli:main"
+crossword-builder = "crossword_builder.cli:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

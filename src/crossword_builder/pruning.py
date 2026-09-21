@@ -10,14 +10,14 @@ segment did not survive are dropped, and AC-3 runs again.
 
 This is stronger than AC-3, which only looks at one cell at a time. It is
 also slower, so it is only applied to blocks and slots that are already
-fairly constrained (see the thresholds in ``ConstructorConfig``).
+fairly constrained (see the thresholds in ``BuilderConfig``).
 """
 from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
 from .ac3 import SquareMap, Word, ac3_reduce, fill_in_squares_one_possibility, initialise
-from .context import ConstructorContext
+from .context import BuilderContext
 from .filters import contains_bad_word_pairs, contains_duplicate
 from .grid import Grid, get_words_in_grid
 from .search import Heuristic, cell_heuristic
@@ -148,7 +148,7 @@ def prune_single_word(init_data: Dict, orientation: str, widx: int) -> List[str]
 
 
 def super_get_new_grids(
-    grid: Grid, ctx: ConstructorContext, heuristic: Heuristic = cell_heuristic
+    grid: Grid, ctx: BuilderContext, heuristic: Heuristic = cell_heuristic
 ) -> List[Grid]:
     cfg = ctx.config
     height = len(grid)

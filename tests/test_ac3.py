@@ -4,8 +4,8 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.ac3 import ac3_reduce, fill_in_squares_one_possibility, initialise
-from crossword_constructor.wordlist import WordIndex
+from crossword_builder.ac3 import ac3_reduce, fill_in_squares_one_possibility, initialise
+from crossword_builder.wordlist import WordIndex
 
 
 class AC3Tests(unittest.TestCase):

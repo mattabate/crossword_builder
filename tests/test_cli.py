@@ -7,7 +7,7 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from crossword_constructor.cli import main
+from crossword_builder.cli import main
 
 WORDLIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tiny_wordlist.txt")
 
